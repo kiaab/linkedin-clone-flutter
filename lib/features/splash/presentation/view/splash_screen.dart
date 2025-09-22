@@ -7,3 +7,8 @@ class AppColors{
   static const Color backgroundColor = Color(0xFFF4F2EE);
 
 }
+
+
+class Test {
+
+}
