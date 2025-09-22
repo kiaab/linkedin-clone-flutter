@@ -11,4 +11,6 @@ class AppColors{
 
 class Test {
 
+
+  var x = 0;
 }
