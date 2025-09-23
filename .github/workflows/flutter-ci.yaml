@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build_and_test:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,17 +24,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: build docker image
-        run: docker buildx build --platform linux/amd64 -t flutter-apk-builder --load .
+      - name: build and cache docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          tags: flutter-apk-builder:${{ github.sha}}
+          cache-from: type=gha
+          cache-to: type=gha,mod=max
       
       - name: Extract APK from the image
         run: |
           docker create --name temp-builder flutter-apk-builder 
-          docker cp temp-builder:/app/build/app/outputs/flutter-apk/app-release.apk ./app-release.apk
+          docker cp temp-builder:/app-release.apk ./app-release.apk
           docker rm temp-builder
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: release-apk-${{ github.sha }}
+          path: ./app-release.apk
