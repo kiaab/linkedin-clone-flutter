@@ -1,0 +1,20 @@
+# Git files
+.git
+.gitignore
+
+# IDE settings
+.idea
+.vscode
+
+# Flutter build artifacts
+build
+.dart_tool
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Lock files
+*.lock
+
+# Test outputs
+coverage
